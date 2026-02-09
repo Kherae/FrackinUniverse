@@ -105,16 +105,21 @@ function applyDamageRequest(damageRequest)
 			damageRequest.damageSourceKind="bow"
 		end]]
 		--instead, we take a smarter workaround that functions, albeit annoyingly
-		if string.find(damageRequest.damageSourceKind,"bow") and not (damageRequest.damageSourceKind=="bow") then
-			if (damage>=1) and (status.stat(self.bowResistName)<100.0) then
-				status.setResource("health",1)
-				--set resistances to zero so at least the damage number is represented properly
-				status.addEphemeralEffect("fuvulnerabilityhunting",1,damageRequest.sourceEntityId)
-				--then spawn a projectile and gib 'em.
-				world.spawnProjectile("fuinvisibleprojectiletiny", entity.position(), damageRequest.sourceEntityId,nil,nil,{damageType="IgnoresDef",damageKind="bow",damageTeam={type="friendly"},power=damage})
-				return {}
+		if not (status.statusProperty("fuHuntingOverrideTriggered")) then
+			if string.find(damageRequest.damageSourceKind,"bow") and not (damageRequest.damageSourceKind=="bow") then
+				if (damage>=1) and (status.stat(self.bowResistName)<100.0) then
+					status.setStatusProperty("fuHuntingOverrideTriggered",true)
+					status.setResource("health",1)
+					--set resistances to zero so at least the damage number is represented properly
+					status.addEphemeralEffect("fuvulnerabilityhunting",1,damageRequest.sourceEntityId)
+					--then spawn a projectile and gib 'em.
+					world.spawnProjectile("fuinvisibleprojectiletiny", entity.position(), damageRequest.sourceEntityId,nil,nil,{damageType="IgnoresDef",damageKind="bow",damageTeam={type="friendly"},power=damage})
+					return {}
+				end
 			end
 		end
+	elseif status.statusProperty("fuHuntingOverrideTriggered") then
+		status.setStatusProperty("fuHuntingOverrideTriggered",false)
 	end
 	return {{
 		sourceEntityId = damageRequest.sourceEntityId,
