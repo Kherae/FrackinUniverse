@@ -7,9 +7,6 @@ function init()
 	self.lastYVelocity = 0
 	self.fallDistance = 0
 
-	local elementalType=root.assetJson("/damage/bow.damage").elementalType or "default"
-	local resistGet=root.assetJson("/damage/elementaltypes.config").elementalType
-	self.bowResistName=(resistGet and resistGet.elementalType) or "physicalResistance"
 
 	self.fallDamagePreferences = settings.stringToInteger[settings.getSetting("monsters", "all")] or 0
 
@@ -107,7 +104,9 @@ function applyDamageRequest(damageRequest)
 		--instead, we take a smarter workaround that functions, albeit annoyingly
 		if not (status.statusProperty("fuHuntingOverrideTriggered")) then
 			if string.find(damageRequest.damageSourceKind,"bow") and not (damageRequest.damageSourceKind=="bow") then
-				if (damage>=1) and (status.stat(self.bowResistName)<100.0) then
+				local resistGet=root.assetJson("/damage/elementaltypes.config")[root.assetJson("/damage/bow.damage").elementalType or "default"]
+				local bowResistName=(resistGet and resistGet.elementalType) or "physicalResistance"
+				if (damage>=1) and (status.stat(bowResistName)<100.0) then
 					status.setStatusProperty("fuHuntingOverrideTriggered",true)
 					status.setResource("health",1)
 					--set resistances to zero so at least the damage number is represented properly
