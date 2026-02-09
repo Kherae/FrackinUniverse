@@ -104,8 +104,8 @@ function applyDamageRequest(damageRequest)
 		if string.find(damageRequest.damageSourceKind,"bow") and not (damageRequest.damageSourceKind=="bow") then
 			if damage>=1 then
 				status.setResource("health",1)
-				--set resistances to nil so at least the damage number is represented properly
-				status.addEphemeralEffect("vulnerability",1,damageRequest.sourceEntityId)
+				--set resistances to zero so at least the damage number is represented properly
+				status.addEphemeralEffect("fuvulnerabilityhunting",1,damageRequest.sourceEntityId)
 				--then spawn a projectile and gib 'em.
 				world.spawnProjectile("fuinvisibleprojectiletiny", entity.position(), damageRequest.sourceEntityId,nil,nil,{damageType="IgnoresDef",damageKind="bow",damageTeam={type="friendly"},power=damage})
 				return {}
