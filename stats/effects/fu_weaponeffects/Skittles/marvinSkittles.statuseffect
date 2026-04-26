@@ -49,6 +49,7 @@
 	],
 
 	"label": "Dunce Rage",
-	"icon": "/interface/statuses/doomed.png"
+	"icon": "/interface/statuses/doomed.png",
+	"blockingStat":"specialStatusImmunity"
 
 }
