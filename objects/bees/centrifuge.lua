@@ -76,7 +76,6 @@ function update(dt)
 
 			local rnd = math.random()
 			local rarityTier
-
 			--works properly with this properly sorted ascending, and using ipairs.
 			for _,pack in ipairs(self.itemChanceWeights) do
 				local rarity,highEnd=table.unpack(pack)
@@ -103,7 +102,7 @@ function update(dt)
 
 				if((next(itemChoices))~=nil) then
 					rnd=math.random()
-					itemChoices=packProcessingChain(itemChoices)
+					itemChoices=packProcessingChain(itemChoices,true)
 					for _,pack in ipairs(itemChoices) do
 						local rarity,highEnd=table.unpack(pack)
 						if (rnd<=highEnd) then
@@ -115,7 +114,6 @@ function update(dt)
 					end
 				end
 			end
-
 			if selectedItem then
 				local throw={parameters={}, name=selectedItem, count=1}
 				local contSize=world.containerSize(entity.id())
@@ -211,8 +209,8 @@ function die()
 	storage.currentinput=nil
 end
 
-function packProcessingChain(tableDo)
-	return fitPacksToNormalizedRange(normalizePackValues(sortPacksAscending(tableDo)))
+function packProcessingChain(tableDo,divideMode)
+	return fitPacksToNormalizedRange(normalizePackValues(sortPacksAscending(tableDo),divideMode))
 end
 
 function fitPacksToNormalizedRange(tableToSort)
@@ -253,14 +251,19 @@ function sortPacksAscending(tableToSort)
 	return bufferTable
 end
 
-function normalizePackValues(tableToSort,appendNone)
+function normalizePackValues(tableToSort,divideMode)
 	local bufferTotal=0
 	local bufferChoices={}
+	local bufferCount=0
 
 	for _,pack in ipairs(tableToSort) do
 		local rarity,chance=table.unpack(pack)
-		bufferChoices[#bufferChoices+1]={rarity,chance}
-		bufferTotal=bufferTotal+chance
+		if(chance>0) then
+			if(divideMode) then chance = 1 / chance end
+			bufferChoices[#bufferChoices+1]={rarity,chance}
+			bufferTotal=bufferTotal+chance
+			bufferCount=bufferCount+1
+		end
 	end
 
 	--if lower than 1.0 total, that remaining amount becomes a chance for 'none'

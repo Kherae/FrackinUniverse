@@ -8,6 +8,7 @@
   ],
 
   "label" : "Greg Freeze",
-  "icon" : "/interface/statuses/timefreeze.png"
+  "icon" : "/interface/statuses/timefreeze.png",
+  "blockingStat":"specialStatusImmunity"
 
 }
