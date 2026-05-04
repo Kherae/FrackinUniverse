@@ -15,7 +15,7 @@ end
 function containerCallback()
   local items = world.containerItems(entity.id())
 
-  if items[1]~=null and items[2]~=null and
+  if items[1] and items[2] and
      items[1].name == "sapling" and items[2].name == "sapling" then
 
     local leafsample = items[2]
