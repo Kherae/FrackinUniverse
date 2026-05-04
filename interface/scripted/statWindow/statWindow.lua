@@ -73,7 +73,7 @@ function update()
 			if(priority==stuff.priority) then
 				local listItem = "immunitiesList.textList."..widget.addListItem("immunitiesList.textList")
 				widget.setText(listItem..".immunity", stuff.name)
-				bufferList[thing]=null
+				bufferList[thing] = nil
 			end
 		end
 	end
