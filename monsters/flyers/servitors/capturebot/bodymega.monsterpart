@@ -1,0 +1,9 @@
+{
+  "name" : "servitorcapturebotmega",
+  "category" : "servitorcapturebotmega",
+  "type" : "body",
+
+  "frames" : {
+    "body" : "servitorcapturebotmega.png"
+  }
+}
