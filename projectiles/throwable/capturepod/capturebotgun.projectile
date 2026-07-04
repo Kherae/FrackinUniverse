@@ -17,5 +17,7 @@
   "piercing" : true,
   "inaccuracy" : 0,
   "statusEffects":["capturebot"],
-  "scripts" : [ "capturepodgun.lua" ]
+  "scripts" : [ "capturepodgun.lua" ],
+  "baseHomingControlForce" : 50,
+  "scriptDelta": 6
 }

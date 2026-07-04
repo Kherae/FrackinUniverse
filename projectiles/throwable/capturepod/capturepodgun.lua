@@ -1,7 +1,38 @@
 require "/scripts/util.lua"
 require "/scripts/companions/util.lua"
+require "/scripts/vec2.lua"
+
+function init()
+	local baseHomingForce=config.getParameter("baseHomingControlForce")
+	if(baseHomingForce) then
+		self.targetSpeed = vec2.mag(mcontroller.velocity())
+		self.controlForce = baseHomingForce * self.targetSpeed
+		mcontroller.setVelocity({0,0})
+	end
+end
 
 function update(dt)
+	if self.controlForce then
+		local targets = world.entityQuery(mcontroller.position(), 20, {
+			withoutEntityId = projectile.sourceEntity(),
+			includedTypes = {"monster"},
+			order = "nearest"
+		})
+		for _, target in pairs(targets) do
+			if entity.isValidTarget(target) and entity.entityInSight(target) then
+				local targetPos = world.entityPosition(target)
+				local myPos = mcontroller.position()
+				local dist = world.distance(targetPos, myPos)
+				local mDist=vec2.mag(dist)
+
+				local targetSpeed=self.targetSpeed*math.max((math.min(mDist,10)/10.0),0.125)
+				local targetForce=self.controlForce^((2.0-(math.min(mDist,10)/10.0)))^2
+				mcontroller.approachVelocity(vec2.mul(vec2.norm(dist), targetSpeed), targetForce)
+				break
+			end
+		end
+	end
+
 	if self.entityId then
 		if not self.sentPowerData then
 			if self.sendingPowerData and self.sendingPowerData:finished() and self.sendingPowerData:succeeded() and self.sendingPowerData:result() then

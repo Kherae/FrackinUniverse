@@ -59,7 +59,7 @@
 						"projectileParameters": {
 							"inaccuracy": 0.0,
 							"speed": 85,
-							"timeToLive": 2.0,
+							"timeToLive": 4.0,
 							"power": 5
 						},
 						"power": 10,
