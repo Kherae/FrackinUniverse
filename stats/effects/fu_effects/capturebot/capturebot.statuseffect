@@ -2,13 +2,19 @@
   "name" : "capturebot",
 
   "effectConfig" : {
-    "healthPercentage" : 0.15,
-    "directives" : "fade=AAFF88FF;0.15?border=2;AAFF8822;00000000"
+    //"healthPercentage" : 0.15,
+    //"directives" : "fade=AAFF88FF;0.15?border=2;AAFF8822;00000000"
+	"enableCaptureDamage":true,
+	"usePercent": false,
+	"enableStun":false,
+	"applyDirectives":false,
+	"blocker": "warpedcapture",
+	"directives": "fade=AAFF88FF;0.15?border=2;AAFF8822;00000000"
   },
   "defaultDuration" : 3,
 
   "scripts" : [
-    "capturebot.lua"
+    "capturegun.lua"
   ],
 
   "animationConfig" : "capturebot.animation"

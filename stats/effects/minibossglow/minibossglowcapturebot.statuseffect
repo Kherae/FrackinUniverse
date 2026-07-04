@@ -1,0 +1,11 @@
+{
+  "name" : "minibossglowcapturebot",
+  "effectConfig" : {},
+  "defaultDuration" : 5,
+
+  "scripts" : [
+    "minibossglowcapturebot.lua"
+  ],
+
+  "animationConfig" : "minibossglow.animation"
+}
