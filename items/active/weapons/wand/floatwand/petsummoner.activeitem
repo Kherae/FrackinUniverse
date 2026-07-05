@@ -81,7 +81,7 @@ Hold ^green;Shift^reset; to summon crew instead.
 			"allowFlip": true
 		},
 		"charge": {
-			"duration": 3,
+			"duration": 1.5,
 			"armRotation": 20,
 			"weaponRotation": -20,
 			"twoHanded": false,
