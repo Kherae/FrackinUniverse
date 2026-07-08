@@ -1,0 +1,16 @@
+{
+  "projectileName" : "razorneedlerthornspoisontranq",
+  "physics" : "stickybullet",
+  "image" : "razorneedlerthornsice.png",
+  "animationCycle" : 0.25,
+  "frameNumber" : 1,
+  "damageKindImage" : "icon.png",
+  "pointLight" : false,
+  "timeToLive" : 2,
+  "lightColor" : [22,33,55],
+  "power" : 5.0,
+  "speed" : 75,
+  "damageKind" : "poison",
+  "statusEffects" : ["fuqtranqrifle"],
+  "scripts":["/projectiles/throwable/capturepod/tranqgun.lua"]
+}
