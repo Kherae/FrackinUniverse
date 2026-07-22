@@ -7,7 +7,10 @@ local bannedWeaponList={
 --nitro decided he wanted a "deal 10% of target's max hp as dmg that ignores all resistances and immunities" weapon.
 "knightfall_cronus",
 --the only reason you'd use this is to cheat. boss cannot exist outside its domain
-"thea-instakillgun"
+"thea-instakillgun",
+--yeah SG has some too
+"sgtoyminigungod",
+"sggodgun"
 }
 
 function init()
