@@ -152,6 +152,12 @@ function die()
 end
 
 function damage(args)
+	-- sb.logInfo("%s",args)
+	--no taking more  than 10% health per tick
+	if args.damage>(self.resourceMax("health")*0.1) then
+		status.modifyResource("health",args.damage)
+		args.damage=0.0
+	end
 	self.tookDamage = true
 	self.healthLevel=status.resourcePercentage("health")
 
@@ -206,7 +212,17 @@ function trackTargets(keepInSight, queryRange, trackingRange, switchTargetDistan
 	local updatedTargets = {}
 	local cheaterFound=false
 	for _,targetId in ipairs(self.targets) do
-		if (contains(bannedWeaponList,world.entityHandItem(targetId,"primary") or "") or contains(bannedWeaponList,world.entityHandItem(targetId,"alt") or "")) then
+		local leftID=world.entityHandItem(targetId,"primary") or ""
+		local rightID=world.entityHandItem(targetId,"alt") or ""
+		local leftItem=world.entityHandItemDescriptor(targetId,"primary")
+		local rightItem=world.entityHandItemDescriptor(targetId,"alt")
+		local leftDPS=leftItem and ((leftItem.parameters and leftItem.parameters.baseDPS) or (leftItem.config and leftItem.config.baseDPS)) or 0
+		local rightDPS=rightItem and ((rightItem.parameters and rightItem.parameters.baseDPS) or (rightItem.config and rightItem.config.baseDPS)) or 0
+		local leftFiretime=leftItem and ((leftItem.parameters and leftItem.parameters.fireTime) or (leftItem.config and leftItem.config.fireTime)) or 1
+		local rightFiretime=rightItem and ((rightItem.parameters and rightItem.parameters.fireTime) or (rightItem.config and rightItem.config.fireTime)) or 1
+		local leftIsCheat=contains(bannedWeaponList,leftID) or (leftDPS>=100) or (leftFiretime<0.6)
+		local rightIsCheat=contains(bannedWeaponList,rightID) or (rightDPS>=100) or (rightFiretime<0.6)
+		if (leftIsCheat or rightIsCheat) then
 			cheaterFound=true
 		end
 		if validTarget(targetId, keepInSight, trackingRange) then
