@@ -154,9 +154,11 @@ end
 function damage(args)
 	-- sb.logInfo("%s",args)
 	--no taking more  than 10% health per tick
-	if args.damage>(self.resourceMax("health")*0.1) then
+	local maxhp=status.resourceMax("health")
+	if args.damage>(maxhp*0.1) then
 		status.modifyResource("health",args.damage)
-		args.damage=0.0
+		args.damage=maxhp*0.01
+		status.modifyResource("health",-args.damage)
 	end
 	self.tookDamage = true
 	self.healthLevel=status.resourcePercentage("health")
