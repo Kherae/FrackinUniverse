@@ -2,6 +2,14 @@ require "/scripts/util.lua"
 require "/scripts/rect.lua"
 require "/scripts/vec2.lua"
 
+--because some people are just that cheap.
+local bannedWeaponList={
+--nitro decided he wanted a "deal 10% of target's max hp as dmg that ignores all resistances and immunities" weapon.
+"knightfall_cronus",
+--the only reason you'd use this is to cheat. boss cannot exist outside its domain
+"thea-instakillgun"
+}
+
 function init()
 	self.tookDamage = false
 	self.dead = false
@@ -193,7 +201,11 @@ function trackTargets(keepInSight, queryRange, trackingRange, switchTargetDistan
 
 	--Remove any invalid targets from the list
 	local updatedTargets = {}
+	local cheaterFound=false
 	for _,targetId in ipairs(self.targets) do
+		if (contains(bannedWeaponList,world.entityHandItem(targetId,"primary") or "") or contains(bannedWeaponList,world.entityHandItem(targetId,"alt") or "")) then
+			cheaterFound=true
+		end
 		if validTarget(targetId, keepInSight, trackingRange) then
 			table.insert(updatedTargets, targetId)
 		end
@@ -204,6 +216,11 @@ function trackTargets(keepInSight, queryRange, trackingRange, switchTargetDistan
 	self.targetId = self.targets[1]
 	if self.targetId then
 		self.targetPosition = world.entityPosition(self.targetId)
+	end
+	if cheaterFound then
+		status.addEphemeralEffect("invulnerable",math.huge)
+		status.addEphemeralEffect("trolol",15)
+		status.addEphemeralEffect("fuadaptiveresistance",60)
 	end
 end
 
