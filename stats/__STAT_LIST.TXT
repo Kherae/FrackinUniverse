@@ -47,7 +47,7 @@ IMMUNITIES
         slushslowImmunity           [amount] [Boolean]	- not FU, not vanilla, just...some other mod.
         snowslowImmunity            [amount] [Boolean] - ice waste biomes
         snowslipImmunity            [amount] [Boolean] - not FU, not vanilla.
-        iceslipImmunity             [amount] [Boolean] - added
+        iceslipImmunity             [amount] [Boolean] - added to tile effects file for ice tiles
 
         tarImmunity                 [amount] [Boolean]
         tarStatusImmunity           [amount] [Boolean]
