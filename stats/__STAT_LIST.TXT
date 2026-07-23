@@ -44,10 +44,10 @@ IMMUNITIES
         fumudslowImmunity           [amount] [Boolean]
         fujungleslowImmunity        [amount] [Boolean]
 
-        slushslowImmunity           [amount] [Boolean]
-        snowslowImmunity            [amount] [Boolean]
-        snowslipImmunity            [amount] [Boolean]
-        iceslipImmunity             [amount] [Boolean]
+        slushslowImmunity           [amount] [Boolean]	- not FU, not vanilla, just...some other mod.
+        snowslowImmunity            [amount] [Boolean] - ice waste biomes
+        snowslipImmunity            [amount] [Boolean] - not FU, not vanilla.
+        iceslipImmunity             [amount] [Boolean] - added
 
         tarImmunity                 [amount] [Boolean]
         tarStatusImmunity           [amount] [Boolean]
@@ -67,7 +67,7 @@ IMMUNITIES
         biomecoldImmunity           [amount] [Boolean]
         ffextremecoldImmunity       [amount] [Boolean]
         liquidnitrogenImmunity      [amount] [Boolean]
-        iceStatusImmunity           [amount] [Boolean]
+        iceStatusImmunity           [amount] [Boolean] - vanilla cold-damage related status, ice traps and ice monsters.
         coldimmunity    			[amount] [Boolean]
 
         biomeheatImmunity           [amount] [Boolean]
