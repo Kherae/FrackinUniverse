@@ -55,7 +55,7 @@ function update()
 		if not skipping then
 			if status.stat(thing) >= 1 then
 				bufferList[thing]={name=stuff.name,priority=stuff.priority or -1}
-				bufferPrioritiesFound[stuff.priority]=true
+				bufferPrioritiesFound[stuff.priority or -1]=true
 			end
 		end
 	end
