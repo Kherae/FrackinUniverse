@@ -35,6 +35,10 @@ function fu_configureShipPet()
 end
 
 function fu_crashberry()
-		status.clearAllPersistentEffects()
-		status.clearEphemeralEffects()
+	status.clearAllPersistentEffects()
+	status.clearEphemeralEffects()
+end
+
+function fu_recheckresearch()
+	player.setProperty("fu_recheckResearch",true)
 end

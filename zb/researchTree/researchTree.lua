@@ -81,6 +81,9 @@ function init()
 	end
 
 	-- Check if the tree was updated, and reacquire blueprints for already learned research
+	--do the thing here
+	local forceRecheck=player.getProperty("fu_recheckResearch")
+	-- if(forceRecheck) then sb.logInfo("rechecking research") end
 	for tree, dataString in pairs(researchedTable) do
 		if data.versions[tree] then
 			local oldVersion = ""
@@ -90,7 +93,7 @@ function init()
 				oldVersion = string.sub(dataString, 0, versionEndPos-1)
 			end
 
-			if oldVersion ~= data.versions[tree] then
+			if forceRecheck or (oldVersion ~= data.versions[tree]) then
 				if versionEndPos then
 					dataString = string.sub(dataString, versionEndPos + string.len(data.versionSplitString), string.len(dataString))
 				end
@@ -125,6 +128,9 @@ function init()
 				researchedTable[tree] = data.versions[tree]..data.versionSplitString..dataString
 			end
 		end
+	end
+	if forceRecheck then
+		player.setProperty("fu_recheckResearch")
 	end
 
 	status.setStatusProperty("zb_researchtree_researched", researchedTable)

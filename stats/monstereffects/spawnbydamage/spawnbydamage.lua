@@ -11,7 +11,7 @@ end
 function update(dt)
 
 	if status.resourcePercentage('health') + 1 / self.spawnCount <  1 / self.spawnCount * self.spawns then
-		world.spawnMonster(self.spawnMonster,mcontroller.position(),{aggressive = true})
+		world.spawnMonster(self.spawnMonster,mcontroller.position(),{aggressive = true,damageTeam = world.entityDamageTeam(entity.id())})
 		self.spawns = self.spawns - 1
 	end
 

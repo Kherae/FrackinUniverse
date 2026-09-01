@@ -8,5 +8,5 @@
     "item" : "labcomputer2",
     "count" : 1
   },
-  "groups" : [ "craftingfurniture2", "decoration", "all" ]
+  "groups" : [ "powerstation1", "consumer", "all" ]
 }

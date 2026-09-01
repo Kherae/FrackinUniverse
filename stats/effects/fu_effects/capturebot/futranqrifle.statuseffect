@@ -1,0 +1,10 @@
+{
+	"name": "fuqtranqrifle",
+
+	"effectConfig": {},
+	"defaultDuration": 3,
+
+	"scripts": ["tranqgun.lua"],
+
+	"animationConfig": "capturebot.animation"
+}

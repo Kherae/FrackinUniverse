@@ -16,16 +16,22 @@ function init()
 	end
 
 	effect.addStatModifierGroup({{stat = "deathbombDud", amount = 1}})
-	effect.setParentDirectives(config.getParameter("directives", ""))
+	self.applyDirectives=config.getParameter("applyDirectives")
+	if(self.applyDirectives) then
+		effect.setParentDirectives(config.getParameter("directives", ""))
+	end
 
 	self.isCapturable=world.callScriptedEntity(entity.id(),"config.getParameter","capturable")
 
-	if (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
+	if self.enableStun and (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
 		status.setResource("stunned", math.max(status.resource("stunned"), effect.duration()))
 		mcontroller.setVelocity({0, 0})
 		mcontroller.controlModifiers({facingSuppressed = true,movementSuppressed = true})
 	end
+	self.applyCaptureDamage=config.getParameter("enableCaptureDamage")
 	self.usePercent=config.getParameter("usePercent")
+
+	self.enableStun=config.getParameter("enableStun")
 
 	message.setHandler("podPower",podPower)
 	message.setHandler("podSource",podSource)
@@ -36,7 +42,7 @@ function update(dt)
 		effect.expire()
 		return
 	else
-		if (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
+		if self.enableStun and (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
 			status.setResource("stunned", math.max(status.resource("stunned"), effect.duration()))
 			mcontroller.setVelocity({0, 0})
 			mcontroller.controlModifiers({facingSuppressed = true,movementSuppressed = true})
@@ -48,7 +54,7 @@ function update(dt)
 			capturePromise=world.sendEntityMessage(entity.id(), "pet.attemptCapture",self.podSource)
 		end
 
-		if self and self.isCapturable and self.podPower and not (self.didDamage or self.pet) then
+		if self and self.applyCaptureDamage and self.isCapturable and self.podPower and not (self.didDamage or self.pet) then
 			local damage
 
 			if self.usePercent then --alternative scaling: percentage
@@ -77,7 +83,7 @@ end
 function uninit()
 	if not self.isCapturable or world.entityType(entity.id()) ~= "monster" or status.statPositive("captureImmunity") or status.statPositive("specialStatusImmunity") then
 		return
-	elseif (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
+	elseif self.enableStun and (status.isResource("stunned")) and (not status.statPositive("stunImmunity")) and (not status.isResource("food")) then
 		status.setResource("stunned",0)
 	end
 end

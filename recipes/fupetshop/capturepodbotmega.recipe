@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "voxel10k", "count" : 4000 }
+  ],
+  "output" : {
+    "item" : "sentrybotcapturebotmega",
+    "count" : 1
+  },
+  "groups" : [ "fupetshop", "all", "items", "nouncrafting","norecycling" ]
+}

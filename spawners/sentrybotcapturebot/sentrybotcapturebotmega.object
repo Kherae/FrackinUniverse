@@ -1,0 +1,35 @@
+{
+  "objectName" : "sentrybotcapturebotmega",
+  "rarity" : "essential",
+  "description" : "Captures creatures in Mega Pet Balls.",
+  "shortdescription" : "Mega Capture Bot",
+  "race" : "generic",
+  "category" : "decorative",
+  "price" : 250000,
+  "printable" : false,
+
+  "inventoryIcon" : "megasentrybotcrafticon.png",
+  "orientations" : [
+    {
+      "dualImage" : "megasentrybotcraft.png:<color>",
+
+      "imagePosition" : [-10, 0],
+      "frames" : 1,
+      "animationCycle" : 1.0,
+
+      "spaces" : [  [0, 0], [-1, 0], [0, 1], [-1, 1]],
+//      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ],
+
+  "botspawner" : {
+      "type" : "servitorcapturebotmega",
+	  "monsterImage":"/monsters/walkers/waterbot/waterbot.png:idle.1?"
+  },
+
+  "scripts" : [
+    "/spawners/fubotspawner.lua"
+  ],
+  "scriptDelta" : 5
+}

@@ -2,6 +2,17 @@ require "/scripts/util.lua"
 require "/scripts/rect.lua"
 require "/scripts/vec2.lua"
 
+--because some people are just that cheap.
+local bannedWeaponList={
+--nitro decided he wanted a "deal 10% of target's max hp as dmg that ignores all resistances and immunities" weapon.
+"knightfall_cronus",
+--the only reason you'd use this is to cheat. boss cannot exist outside its domain
+"thea-instakillgun",
+--yeah SG has some too
+"sgtoyminigungod",
+"sggodgun"
+}
+
 function init()
 	self.tookDamage = false
 	self.dead = false
@@ -141,6 +152,14 @@ function die()
 end
 
 function damage(args)
+	-- sb.logInfo("%s",args)
+	--no taking more  than 10% health per tick
+	local maxhp=status.resourceMax("health")
+	if args.damage>(maxhp*0.1) then
+		status.modifyResource("health",args.damage)
+		args.damage=maxhp*0.01
+		status.modifyResource("health",-args.damage)
+	end
 	self.tookDamage = true
 	self.healthLevel=status.resourcePercentage("health")
 
@@ -193,7 +212,21 @@ function trackTargets(keepInSight, queryRange, trackingRange, switchTargetDistan
 
 	--Remove any invalid targets from the list
 	local updatedTargets = {}
+	local cheaterFound=false
 	for _,targetId in ipairs(self.targets) do
+		local leftID=world.entityHandItem(targetId,"primary") or ""
+		local rightID=world.entityHandItem(targetId,"alt") or ""
+		local leftItem=world.entityHandItemDescriptor(targetId,"primary")
+		local rightItem=world.entityHandItemDescriptor(targetId,"alt")
+		local leftDPS=leftItem and ((leftItem.parameters and leftItem.parameters.baseDPS) or (leftItem.config and leftItem.config.baseDPS)) or 0
+		local rightDPS=rightItem and ((rightItem.parameters and rightItem.parameters.baseDPS) or (rightItem.config and rightItem.config.baseDPS)) or 0
+		local leftFiretime=leftItem and ((leftItem.parameters and leftItem.parameters.fireTime) or (leftItem.config and leftItem.config.fireTime)) or 1
+		local rightFiretime=rightItem and ((rightItem.parameters and rightItem.parameters.fireTime) or (rightItem.config and rightItem.config.fireTime)) or 1
+		local leftIsCheat=contains(bannedWeaponList,leftID) or (leftDPS>=100) or (leftFiretime<0.6)
+		local rightIsCheat=contains(bannedWeaponList,rightID) or (rightDPS>=100) or (rightFiretime<0.6)
+		if (leftIsCheat or rightIsCheat) then
+			cheaterFound=true
+		end
 		if validTarget(targetId, keepInSight, trackingRange) then
 			table.insert(updatedTargets, targetId)
 		end
@@ -204,6 +237,11 @@ function trackTargets(keepInSight, queryRange, trackingRange, switchTargetDistan
 	self.targetId = self.targets[1]
 	if self.targetId then
 		self.targetPosition = world.entityPosition(self.targetId)
+	end
+	if cheaterFound then
+		status.addEphemeralEffect("invulnerable",math.huge)
+		status.addEphemeralEffect("trolol",15)
+		status.addEphemeralEffect("fuadaptiveresistance",60)
 	end
 end
 

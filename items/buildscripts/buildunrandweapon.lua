@@ -111,14 +111,37 @@ function build(directory, config, parameters, level, seed)
 				local bufferEnergy={}
 				local bufferDamage={}
 				local bufferFireTime={}
+
 				for _,set in pairs(primaryAbility.chargeLevels) do
 					table.insert(bufferEnergy,set.energyCost)
 					table.insert(bufferDamage,set.baseDamage)
 					table.insert(bufferFireTime,set.time)
 				end
-				bufferEnergy={math.min(table.unpack(bufferEnergy)),math.max(table.unpack(bufferEnergy))}
-				bufferDamage={math.min(table.unpack(bufferDamage)),math.max(table.unpack(bufferDamage))}
-				bufferFireTime={math.min(table.unpack(bufferFireTime)),math.max(table.unpack(bufferFireTime))}
+
+				local fallbackEnergy
+				local fallbackDamage
+				local fallbackSpeed
+
+				if #bufferEnergy>0 then
+					bufferEnergy={math.min(table.unpack(bufferEnergy)),math.max(table.unpack(bufferEnergy))}
+				else
+					fallbackEnergy=true
+					energyCost=util.round((primaryAbility and (primaryAbility.energyUsage or primaryAbility.energyPerShot) or 0) * (speed) * (isAmmo and 0.5 or 1.0),1)
+				end
+
+				if #bufferDamage>0 then
+					bufferDamage={math.min(table.unpack(bufferDamage)),math.max(table.unpack(bufferDamage))}
+				else
+					fallbackDamage=true
+					damagePerShot=util.round((primaryAbility and (primaryAbility.baseDps or primaryAbility.baseDamage) or 0) * (speed) * config.damageLevelMultiplier, 1)
+				end
+
+				if #bufferFireTime>0 then
+					bufferFireTime={math.min(table.unpack(bufferFireTime)),math.max(table.unpack(bufferFireTime))}
+				else
+					fallbackSpeed=true
+					speed=util.round(1 / (primaryAbility and primaryAbility.fireTime or 1.0), 1)
+				end
 
 				local function t2s(t,mult)
 					str=""
@@ -127,9 +150,16 @@ function build(directory, config, parameters, level, seed)
 					end
 					return str
 				end
-				energyCost=t2s(bufferEnergy,isAmmo and 0.5)
-				damagePerShot=t2s(bufferDamage)
-				speed=t2s(bufferFireTime)
+
+				if not fallbackEnergy then
+					energyCost=t2s(bufferEnergy,isAmmo and 0.5)
+				end
+				if not fallbackDamage then
+					damagePerShot=t2s(bufferDamage)
+				end
+				if not fallbackSpeed then
+					speed=t2s(bufferFireTime)
+				end
 			else
 				energyCost=util.round((primaryAbility and (primaryAbility.energyUsage or primaryAbility.energyPerShot) or 0) * (speed) * (isAmmo and 0.5 or 1.0),1)
 				damagePerShot=util.round((primaryAbility and (primaryAbility.baseDps or primaryAbility.baseDamage) or 0) * (speed) * config.damageLevelMultiplier, 1)

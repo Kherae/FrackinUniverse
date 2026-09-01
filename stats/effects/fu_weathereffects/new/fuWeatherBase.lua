@@ -171,8 +171,10 @@ function fuWeatherBase.sendWarning(self, label)
 			local message = nil
 			local propString=(self.configPath or "genericBiomeWarningLastUsedProperty").."/"..label
 			local biomeWarningLastUsedProperty=status.statusProperty(propString)
+			-- sb.logInfo("%s",{ps=propString,bwlup=biomeWarningLastUsedProperty,d=os.time()-(biomeWarningLastUsedProperty or 0)})
 			--sb.logInfo("propstr %s propval %s p1 %s p2 %s",propString,biomeWarningLastUsedProperty,propCondition1,propCondition2)
-			if (not biomeWarningLastUsedProperty) or ((os.time()-biomeWarningLastUsedProperty)>=60) then
+			--adding a handler in case of...uh..shenanigans with server time. also increasing the timer to 5 minutes.
+			if (not biomeWarningLastUsedProperty) or (math.abs(os.time()-biomeWarningLastUsedProperty)>=300) then
 				if (type(self.messages[label]) == "string") then
 					-- If the target is a string, then that is the message.
 					message = self.messages[label]

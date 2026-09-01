@@ -12,7 +12,7 @@ function update(dt)
 		worldMouthPos[1]=world.xwrap(worldMouthPos[1])
 		if not world.breathable(worldMouthPos) then
 			local dummy=status.statusProperty("biomeairlesscooldown")
-			if not dummy or ((os.time()-dummy)>=300) then
+			if not dummy or (math.abs(os.time()-dummy)>=300) then
 				world.sendEntityMessage(entity.id(), "queueRadioMessage", "biomeairless", 1.0)
 				status.setStatusProperty("biomeairlesscooldown",os.time())
 			end
